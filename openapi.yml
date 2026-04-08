@@ -1,0 +1,107 @@
+openapi: 3.1.1
+info:
+  title: Backend Benchmark API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /health:
+    get:
+      summary: Check the health of the API
+      responses:
+        "200":
+          description: OK
+  /compute:
+    get:
+      summary: Perform a computationally intensive task
+      parameters:
+        - in: query
+          name: n
+          schema:
+            type: integer
+          required: true
+          description: The input number for the computation
+      responses:
+        "200":
+          description: Computation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: integer
+  /users/raw:
+    get:
+      summary: Get raw user data
+      responses:
+        "200":
+          description: Raw user data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+  /users:
+    get:
+      summary: Get a list of users
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
