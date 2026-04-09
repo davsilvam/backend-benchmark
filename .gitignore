@@ -1,4 +1,8 @@
 # Generated build/runtime artifacts
 apps/dotnet/obj/
+apps/dotnet/bin/
+apps/dotnet/publish/
 apps/laravel/bootstrap/cache/
 apps/laravel/storage/
+apps/django/.venv/
+apps/django/**/__pycache__/
