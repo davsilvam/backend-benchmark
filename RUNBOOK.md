@@ -153,3 +153,37 @@ docker compose stop db
 
 Benchmark de performance ainda não iniciado neste runbook.
 Este documento cobre apenas baseline de execução e equivalência funcional.
+
+## 6) Protocolo de testes k6
+
+Scripts disponíveis:
+
+- `k6/health.js` (I/O-bound leve)
+- `k6/compute.js` (CPU-bound)
+- `k6/users-raw.js` (banco sem ORM)
+- `k6/users-orm.js` (banco com ORM)
+- `k6/users-post.js` (escrita)
+
+Perfis de carga (`K6_PROFILE`):
+
+- `smoke`
+- `load`
+- `stress`
+
+Rodar todos os cenários de uma vez:
+
+```powershell
+pwsh ./scripts/run-k6.ps1 -BaseUrl "http://localhost:8080" -Profile smoke
+```
+
+Rodar subconjunto:
+
+```powershell
+pwsh ./scripts/run-k6.ps1 -BaseUrl "http://localhost:8080" -Profile load -Tests health,compute,users-raw,users-orm
+```
+
+Rodar stress apenas para cenários principais:
+
+```powershell
+pwsh ./scripts/run-k6.ps1 -BaseUrl "http://localhost:8080" -Profile stress -Tests compute,users-raw,users-orm
+```
