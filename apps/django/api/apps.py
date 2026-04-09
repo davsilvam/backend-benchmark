@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class BenchmarkApiConfig(AppConfig):
+class ApiConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "benchmark_api"
+    name = "api"

@@ -4,6 +4,7 @@ import com.benchmark.spring.entity.User;
 import com.benchmark.spring.service.BenchmarkService;
 import java.util.List;
 import java.util.Map;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,8 +23,8 @@ public class BenchmarkController {
   }
 
   @GetMapping("/compute")
-  public long compute(@RequestParam(defaultValue = "40") int n) {
-    return benchmarkService.compute(n);
+  public Map<String, Long> compute(@RequestParam(defaultValue = "40") int n) {
+    return Map.of("result", benchmarkService.compute(n));
   }
 
   @GetMapping("/users")
@@ -37,6 +38,7 @@ public class BenchmarkController {
   }
 
   @PostMapping("/users")
+  @ResponseStatus(HttpStatus.CREATED)
   public User createUser(@RequestBody User user) {
     return benchmarkService.createUser(user);
   }

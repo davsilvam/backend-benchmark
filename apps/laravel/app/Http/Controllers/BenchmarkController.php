@@ -38,6 +38,7 @@ class BenchmarkController extends Controller
         return response()->json(
             User::query()
                 ->select(["id", "name", "email", "created_at"])
+                ->orderBy("id")
                 ->limit(1000)
                 ->get(),
         );
@@ -46,7 +47,7 @@ class BenchmarkController extends Controller
     public function usersRaw()
     {
         $users = DB::select(
-            "SELECT id, name, email, created_at FROM users LIMIT 1000",
+            "SELECT id, name, email, created_at FROM users ORDER BY id LIMIT 1000",
         );
 
         return response()->json($users);

@@ -5,6 +5,8 @@ import com.benchmark.spring.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,9 @@ public class BenchmarkService {
   }
 
   public List<User> getUsersOrm() {
-    return userRepository.findAll();
+    return userRepository
+      .findAll(PageRequest.of(0, 1000, Sort.by(Sort.Direction.ASC, "id")))
+      .getContent();
   }
 
   public User createUser(User user) {
@@ -50,7 +54,7 @@ public class BenchmarkService {
 
   public List<Map<String, Object>> getUsersRaw() {
     return jdbcTemplate.query(
-      "SELECT id, name, email, created_at FROM users",
+      "SELECT id, name, email, created_at FROM users ORDER BY id LIMIT 1000",
       (rs, rowNum) ->
         Map.<String, Object>of(
           "id",

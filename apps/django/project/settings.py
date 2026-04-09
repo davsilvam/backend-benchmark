@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,7 +14,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "benchmark_api",
+    "api",
 ]
 
 MIDDLEWARE = [
@@ -22,20 +23,20 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
 ]
 
-ROOT_URLCONF = "benchmark_project.urls"
+ROOT_URLCONF = "project.urls"
 
 TEMPLATES = []
 
-WSGI_APPLICATION = "benchmark_project.wsgi.application"
+WSGI_APPLICATION = "project.wsgi.application"
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "benchmark",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "localhost",  # usar "db" no docker
-        "PORT": "5432",
+        "NAME": os.getenv("DB_NAME", "benchmark"),
+        "USER": os.getenv("DB_USER", "benchmark"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "benchmark"),
+        "HOST": os.getenv("DB_HOST", "localhost"),
+        "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
 

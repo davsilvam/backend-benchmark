@@ -25,7 +25,11 @@ def compute(request):
 @csrf_exempt
 def users(request):
     if request.method == "GET":
-        data = list(User.objects.values("id", "name", "email", "created_at")[:1000])
+        data = list(
+            User.objects.order_by("id").values("id", "name", "email", "created_at")[
+                :1000
+            ]
+        )
         return JsonResponse(data, safe=False)
 
     if request.method == "POST":

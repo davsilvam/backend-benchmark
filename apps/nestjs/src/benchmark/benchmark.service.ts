@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import type { DataSource, Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, type Repository } from 'typeorm';
 import { User } from '../users/user.entity';
 
 @Injectable()
@@ -8,6 +8,7 @@ export class BenchmarkService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectDataSource()
     private readonly dataSource: DataSource,
   ) {}
 
@@ -25,12 +26,15 @@ export class BenchmarkService {
   }
 
   async getUsersOrm(): Promise<User[]> {
-    return this.userRepository.find();
+    return this.userRepository.find({
+      order: { id: 'ASC' },
+      take: 1000,
+    });
   }
 
   async getUsersRaw(): Promise<any[]> {
     return this.dataSource.query(
-      'SELECT id, name, email, created_at FROM users',
+      'SELECT id, name, email, created_at FROM users ORDER BY id LIMIT 1000',
     );
   }
 

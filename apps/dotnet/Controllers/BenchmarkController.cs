@@ -42,12 +42,13 @@ public class BenchmarkController : ControllerBase
     {
         var users = await _context.Users
             .AsNoTracking()
+            .OrderBy(u => u.Id)
             .Select(u => new
             {
-                u.Id,
-                u.Name,
-                u.Email,
-                u.CreatedAt
+                id = u.Id,
+                name = u.Name,
+                email = u.Email,
+                created_at = u.CreatedAt
             })
             .Take(1000)
             .ToListAsync();
@@ -65,7 +66,7 @@ public class BenchmarkController : ControllerBase
         await conn.OpenAsync();
 
         await using var cmd = new NpgsqlCommand(
-            "SELECT id, name, email, created_at FROM users LIMIT 1000",
+            "SELECT id, name, email, created_at FROM users ORDER BY id LIMIT 1000",
             conn
         );
 
@@ -93,6 +94,12 @@ public class BenchmarkController : ControllerBase
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        return StatusCode(201, user);
+        return StatusCode(201, new
+        {
+            id = user.Id,
+            name = user.Name,
+            email = user.Email,
+            created_at = user.CreatedAt
+        });
     }
 }
